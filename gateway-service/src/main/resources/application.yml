@@ -1,0 +1,35 @@
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.cloud.loadbalancer: DEBUG
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    config:
+      enabled: false
+    discovery:
+      enabled: true
+    gateway:
+      mvc:
+        routes:
+          - id: STUDENT_MANAGEMENT
+#            uri: lb://STUDENT_MANAGEMENT
+            uri: http://localhost:8081
+            predicates:
+              - Path=/students/**
+          - id: room-service
+#            uri: lb://ROOM_MANAGEMENT
+            uri: http://localhost:8082
+            predicates:
+              - Path=/rooms/**
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+
+server:
+  port: 8888

@@ -6,6 +6,10 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/core_app/pom.xml" />
+        <option value="$PROJECT_DIR$/student_management/pom.xml" />
+        <option value="$PROJECT_DIR$/room_management/pom.xml" />
+        <option value="$PROJECT_DIR$/gateway-service/pom.xml" />
+        <option value="$PROJECT_DIR$/discovery-service/pom.xml" />
       </list>
     </option>
   </component>
