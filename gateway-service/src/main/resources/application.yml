@@ -3,6 +3,8 @@ logging:
     org.springframework.cloud.gateway: DEBUG
     org.springframework.cloud.loadbalancer: DEBUG
 
+server:
+  port: 8888
 spring:
   application:
     name: gateway-service
@@ -12,18 +14,23 @@ spring:
     discovery:
       enabled: true
     gateway:
-      mvc:
-        routes:
-          - id: STUDENT_MANAGEMENT
-#            uri: lb://STUDENT_MANAGEMENT
-            uri: http://localhost:8081
-            predicates:
-              - Path=/students/**
-          - id: room-service
-#            uri: lb://ROOM_MANAGEMENT
-            uri: http://localhost:8082
-            predicates:
-              - Path=/rooms/**
+      routes:
+#        - id: graphql
+#          uri: lb://gateway-service
+#          predicates:
+#              - Path=/graphql/**
+#          filters:
+#              - RewritePath=/graphql/(?<remaining>.*), /graphql/${remaining}
+#        - id: STUDENT_MANAGEMENT
+#          uri: lb://STUDENT_MANAGEMENT
+##          uri: http://localhost:8081
+#          predicates:
+#            Path=/students/**
+        - id: room-service
+          uri: lb://ROOM-MANAGEMENT
+#          uri: http://localhost:8082
+          predicates:
+            Path=/rooms/**
 eureka:
   client:
     service-url:
@@ -31,5 +38,4 @@ eureka:
   instance:
     prefer-ip-address: true
 
-server:
-  port: 8888
+

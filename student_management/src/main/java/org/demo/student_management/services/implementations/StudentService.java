@@ -120,4 +120,49 @@ public class StudentService implements StudentServiceInt {
             return false;
         }
     }
+
+    public String signIn(String username, String password) {
+        // Logic for signing in
+        return "Sign-in successful";
+    }
+
+    public String joinPublicRoom(String roomId) {
+        // Logic for joining a public room
+        return "Joined public room";
+    }
+
+    public String chat(String message) {
+        // Logic for sending a chat message
+        return "Message sent";
+    }
+
+    public String createPrivateRoom(String roomName) {
+        // Logic for creating a private room
+        return "Private room created";
+    }
+
+    public String manageProfile(String profileData) {
+        // Logic for managing profile
+        return "Profile updated";
+    }
+
+    public String receiveNotifications() {
+        // Logic for receiving notifications
+        return "Notifications received";
+    }
+
+    public String reportUser(String userId) {
+        // Logic for reporting a user
+        return "User reported";
+    }
+
+    public String acceptInvitation(String invitationId) {
+        // Logic for accepting an invitation
+        return "Invitation accepted";
+    }
+
+    public String rejectInvitation(String invitationId) {
+        // Logic for rejecting an invitation
+        return "Invitation rejected";
+    }
 }

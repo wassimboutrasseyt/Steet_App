@@ -1,0 +1,187 @@
+type Query {
+
+    # Private Room Queries
+    privateRoomById(id: ID!): PrvRoom
+    allPrivateRooms: [PrvRoom]
+    allPrivateRoomsByUser(userId: ID!): [PrvRoom]
+
+    # Public Room Queries
+    publicRoomById(id: ID!): PubRoom
+    allPublicRooms: [PubRoom]
+}
+
+type Mutation {
+    # Student Mutations
+    createPrivateRoom(roomName: String! ,description: String!): String
+    updatePrivateRoom(id: ID!, prvRoom: PrvRoomInput!): PrvRoom
+    deletePrivateRoom(id: ID!): Boolean
+
+    inviteStudents(roomId: String!, studentId: String!): String
+    kickMember(roomId: String!, memberId: String!): String
+    promoteMember(roomId: String!, memberId: String!): String
+
+    # Public Room Mutations
+    createPublicRoom(pubRoom: PubRoomInput!): PubRoom
+    updatePublicRoom(id: ID!, pubRoom: PubRoomInput!): PubRoom
+    deletePublicRoom(id: ID!): Boolean
+}
+
+# Base User interface
+interface User {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    userName: String!
+    email: String!
+    password: String!
+}
+
+# Student type extending User
+type Student implements User {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    userName: String!
+    email: String!
+    password: String!
+    major: String!
+    dob: String!
+    interest: [Interests]
+    participations: [Participation!]!
+    memberships: [Membership!]!
+}
+
+# Administrator type extending User
+type Administrator implements User {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    userName: String!
+    email: String!
+    password: String!
+}
+
+# Room Interface
+interface Room {
+    id: ID!
+    name: String!
+    description: String!
+    createdAt: String!
+    messages: [Message!]!
+}
+
+# Private Room extending Room
+type PrvRoom implements Room {
+    id: ID!
+    name: String!
+    description: String!
+    createdAt: String!
+    messages: [Message!]!
+    isPrivate: Boolean!
+    createdBy: ID!
+    memberships: [Membership!]!
+}
+
+# Public Room extending Room
+type PubRoom implements Room {
+    id: ID!
+    name: String!
+    description: String!
+    createdAt: String!
+    messages: [Message!]!
+    participation: [Participation!]!
+}
+
+# Membership entity for Private Rooms
+type Membership {
+    id: ID!
+    student: Student!
+    room: PrvRoom!
+    role: Role!
+    isActive: Boolean!
+    joinAt: String!
+    leaveAt: String
+}
+
+# Participation entity for Public Rooms
+type Participation {
+    id: ID!
+    participant: Student!
+    pubRoom: PubRoom!
+    joinedAt: String!
+    leftAt: String
+}
+
+# Message entity
+type Message {
+    id: ID!
+    room: Room!
+    sender_id: ID!
+    content: String!
+    type: MessageType!
+    timestamp: String!
+}
+
+# Enums
+enum MessageType {
+    TEXT
+    IMAGE
+}
+
+enum Role {
+    ADMIN
+    MEMBER
+}
+
+enum Majors {
+    COMPUTER_SCIENCE
+    MATHEMATICS
+    PHYSICS
+    CHEMISTRY
+    BIOLOGY
+    HISTORY
+    ART
+}
+
+enum Interests {
+    MATH
+    SCIENCE
+    HISTORY
+    LITERATURE
+    ART
+    TECHNOLOGY
+    PHYSICS
+    CHEMISTRY
+    BIOLOGY
+}
+
+input StudentInput {
+    firstName: String
+    lastName: String
+    userName: String
+    email: String
+    password: String
+    major: String
+    dob: String
+    interest: [Interests]
+}
+
+input AdministratorInput {
+    firstName: String
+    lastName: String
+    userName: String
+    email: String
+    password: String
+}
+
+input PrvRoomInput {
+    name: String!
+    description: String
+    isPrivate: Boolean!
+    createdBy: ID!
+}
+
+input PubRoomInput {
+    name: String!
+    description: String
+}
