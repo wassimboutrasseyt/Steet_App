@@ -15,22 +15,18 @@ spring:
       enabled: true
     gateway:
       routes:
-#        - id: graphql
-#          uri: lb://gateway-service
-#          predicates:
-#              - Path=/graphql/**
-#          filters:
-#              - RewritePath=/graphql/(?<remaining>.*), /graphql/${remaining}
-#        - id: STUDENT_MANAGEMENT
-#          uri: lb://STUDENT_MANAGEMENT
-##          uri: http://localhost:8081
-#          predicates:
-#            Path=/students/**
         - id: room-service
           uri: lb://ROOM-MANAGEMENT
 #          uri: http://localhost:8082
           predicates:
             Path=/rooms/**
+#            Path=/roomsAdmin/**
+        - id: room-service
+          uri: lb://ROOM-MANAGEMENT
+          #          uri: http://localhost:8082
+          predicates:
+#            Path=/rooms/**
+            Path=/roomsAdmin/**
 eureka:
   client:
     service-url:

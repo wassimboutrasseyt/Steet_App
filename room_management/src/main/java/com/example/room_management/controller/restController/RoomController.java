@@ -1,4 +1,4 @@
-package com.example.room_management.controller.graphController;
+package com.example.room_management.controller.restController;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
