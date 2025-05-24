@@ -10,15 +10,13 @@ import org.demo.student_management.services.interfaces.StudentServiceInt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-
+@Service
 public class StudentService implements StudentServiceInt {
     private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
 
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
 
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
@@ -64,20 +62,19 @@ public class StudentService implements StudentServiceInt {
             logger.warn("No student found with email: {}", email);
         }
         return student;
-    }
-
-    @Override
+    }    @Override
     public Student getStudentByUserName(String userName) {
         if (userName == null || userName.isEmpty()) {
             logger.error("Attempted to fetch a student with a null or empty username");
             throw new IllegalArgumentException("Username cannot be null or empty");
         }
         logger.info("Fetching student with username: {}", userName);
-        Student student = studentRepository.findByUserName(userName);
-        if (student == null) {
+        Optional<Student> student = studentRepository.findByUserName(userName);
+        if (student.isEmpty()) {
             logger.warn("No student found with username: {}", userName);
+            return null;
         }
-        return student;
+        return student.get();
     }
 
     @Override

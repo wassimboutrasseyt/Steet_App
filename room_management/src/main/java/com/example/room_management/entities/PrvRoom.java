@@ -17,7 +17,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PrvRoom extends Room {
     private boolean isPrivate;
-
+    
+    private boolean isVisible; // Controls if the room appears in general listings
+    
     private UUID createdBy;
 
     @OneToMany(mappedBy = "room")

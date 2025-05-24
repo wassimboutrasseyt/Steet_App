@@ -17,6 +17,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PubRoom extends Room {
 
-    @OneToMany(mappedBy = "pubRoom" ,cascade = CascadeType.REMOVE  )
+    @OneToMany(mappedBy = "pubRoom" ,cascade = CascadeType.REMOVE)
     private List<Participation> participation;
 }

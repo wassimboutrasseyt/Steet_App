@@ -53,7 +53,7 @@ spring:
             
         # Student Management Service Routes
         - id: student-management-service
-          uri: lb://student-management
+          uri: lb://STUDENT_MANAGEMENT
           predicates:
             - Path=/api/**
 eureka:

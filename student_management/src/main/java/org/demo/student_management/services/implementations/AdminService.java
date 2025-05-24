@@ -13,7 +13,7 @@ import java.util.UUID;
 @Service
 public class AdminService implements AdminServiceInt {
 
-    private AdministratorRepository adminRepository;
+    private final AdministratorRepository adminRepository;
 
     public AdminService(AdministratorRepository adminRepository) {
         this.adminRepository = adminRepository;

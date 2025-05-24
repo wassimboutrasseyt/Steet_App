@@ -45,15 +45,14 @@ spring:
           uri: lb://room-management
           predicates:
             - Path=/invitations/**
-          
-        - id: student-rooms-service
+            - id: student-rooms-service
           uri: lb://room-management
           predicates:
             - Path=/student/rooms/**
             
         # Student Management Service Routes
         - id: student-management-service
-          uri: lb://student-management
+          uri: lb://STUDENT_MANAGEMENT
           predicates:
             - Path=/api/**
 eureka:
@@ -62,3 +61,4 @@ eureka:
       defaultZone: http://localhost:8761/eureka
   instance:
     prefer-ip-address: true
+

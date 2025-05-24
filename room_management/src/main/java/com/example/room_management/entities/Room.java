@@ -25,6 +25,7 @@ public class Room {
     private UUID id;
     private String name;
     private String description;
+    private String imageUrl;
     private Instant createdAt;
 //    @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE)
 //    private List<Message> messages;
