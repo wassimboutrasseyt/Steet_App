@@ -56,6 +56,12 @@ spring:
           uri: lb://student-management
           predicates:
             - Path=/api/**
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/steet-app-realm
+          jwk-set-uri: http://localhost:8080/realms/steet-app-realm/protocol/openid-connect/certs
 eureka:
   client:
     service-url:
