@@ -14,12 +14,26 @@ spring:
     discovery:
       enabled: true
     gateway:
+      default-filters:
+        - TokenRelay
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
       routes:
         # Room Management Service Routes
         - id: room-service-rooms
           uri: lb://room-management
           predicates:
             - Path=/rooms/**
+
+        - id: public-routes
+          uri: lb://student-management
+          predicates:
+            - Path=/api/users/login,/api/users/register
+          filters: [ ]  # No TokenRelay filter here
           
         - id: room-service-admin
           uri: lb://room-management
@@ -61,10 +75,27 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8080/realms/steet-app-realm
-          jwk-set-uri: http://localhost:8080/realms/steet-app-realm/protocol/openid-connect/certs
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/steet-app-realm
+            token-uri: http://localhost:8080/realms/steet-app-realm/protocol/openid-connect/token
+            authorization-uri: http://localhost:8080/realms/steet-app-realm/protocol/openid-connect/auth
+            user-info-uri: http://localhost:8080/realms/steet-app-realm/protocol/openid-connect/userinfo
+            jwk-set-uri: http://localhost:8080/realms/steet-app-realm/protocol/openid-connect/certs
+        registration:
+          steet-app-client:
+            provider: keycloak
+            client-id: steet-app-client
+            client-secret: 9lB2zN15BGqBgfOFLiEtMiW4oZzAHGlf
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
+            scope: openid,profile,email
+
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
   instance:
     prefer-ip-address: true
+
