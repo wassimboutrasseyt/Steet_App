@@ -36,11 +36,9 @@ public class Student extends User{
     // memberships of the student on private rooms
 //    @OneToMany(mappedBy = "student")
 //    private List<Membership> memberships;
-    private UUID id_memberships;
-
-    // Constructor to initialize User and Student attributes
-    public Student(String firstName, String lastName, String username, String email, String password, Majors major, LocalDate dob, List<Interests> interest) {
-        super(null, firstName, lastName, username, email, password); // Pass null for id, it will be generated
+    private UUID id_memberships;    // Constructor to initialize User and Student attributes
+    public Student(String firstName, String lastName, String username, String email, String password, Majors major, LocalDate dob, List<Interests> interest, String profilePictureUrl) {
+        super(null, firstName, lastName, username, email, password, profilePictureUrl); // Include profilePictureUrl
         this.major = major;
         this.dob = dob;
         this.interest = interest;

@@ -27,4 +27,8 @@ public class User {
     private String userName;
     private String email;
     private String password;
+    
+    // Profile picture URL
+    @Column(length = 1000)
+    private String profilePictureUrl;
 }

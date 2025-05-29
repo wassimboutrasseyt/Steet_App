@@ -14,5 +14,8 @@ public interface StudentServiceInt {
     public Student updateStudent(Student student);
     public List<Student> getAllStudents();
     public boolean deleteStudent(UUID id);
-
+    
+    // Profile picture methods
+    public Student updateProfilePicture(UUID id, String profilePictureUrl);
+    public String getProfilePictureUrl(UUID id);
 }
