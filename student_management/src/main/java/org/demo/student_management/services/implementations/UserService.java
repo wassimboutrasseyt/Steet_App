@@ -148,7 +148,7 @@ public class UserService implements UserServiceInt {
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(form, headers);
 
         ResponseEntity<KeycloakTokenResponse> response = restTemplate.exchange(
-                "http://localhost:8080/realms/steet-app-realm/protocol/openid-connect/token",
+                "http://localhost:8088/realms/steet-app-realm/protocol/openid-connect/token",
                 HttpMethod.POST,
                 entity,
                 KeycloakTokenResponse.class
