@@ -32,20 +32,20 @@ public class PrvRoomController {
     }
     
     @PostMapping("/student/create")
-    public ResponseEntity<PrvRoom> createStudentPrivateRoom(@RequestBody PrvRoomCreateRequest request) {
+    public ResponseEntity<PrvRoom> createStudentPrivateRoom(
+            @RequestPart("prvRoom") PrvRoom prvRoom,
+            @RequestPart("imageFile") MultipartFile imageFile) {
         try {
-            String name = request.getPrvRoom().getName();
-            String description = request.getPrvRoom().getDescription();
-            UUID studentId = request.getPrvRoom().getCreatedBy();
-            boolean isVisible = request.getPrvRoom().isVisible();
+            String name = prvRoom.getName();
+            String description = prvRoom.getDescription();
+            UUID studentId = prvRoom.getCreatedBy();
+            boolean isVisible = prvRoom.isVisible();
 
-            if (studentId == null || name == null || name.trim().isEmpty() || request.getImageFile() == null) {
+            if (studentId == null || name == null || name.trim().isEmpty() || imageFile == null) {
                 return ResponseEntity.badRequest().build();
             }
 
-            MultipartFile image = request.getImageFile();
-
-            String imageUrl = fileStorageService.storeFile(image);
+            String imageUrl = fileStorageService.storeFile(imageFile);
 
             PrvRoom newRoom = new PrvRoom();
             newRoom.setName(name);
