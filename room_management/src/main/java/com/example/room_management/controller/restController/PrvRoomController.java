@@ -1,10 +1,14 @@
 package com.example.room_management.controller.restController;
 
+import com.example.room_management.dto.PrvRoomCreateRequest;
 import com.example.room_management.entities.PrvRoom;
+import com.example.room_management.services.implementations.FileStorageService;
 import com.example.room_management.services.implementations.PrvRoomService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 
 import java.util.List;
 import java.util.UUID;
@@ -14,32 +18,47 @@ import java.util.UUID;
 public class PrvRoomController {
 
     private final PrvRoomService prvRoomService;
+    private final FileStorageService fileStorageService;
 
-    public PrvRoomController(PrvRoomService prvRoomService) {
+    public PrvRoomController(PrvRoomService prvRoomService, FileStorageService fileStorageService) {
         this.prvRoomService = prvRoomService;
-    }    @PostMapping("/create")
+        this.fileStorageService = fileStorageService;
+    }
+
+    @PostMapping("/create")
     public ResponseEntity<PrvRoom> createPrivateRoom(@RequestBody PrvRoom prvRoom) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(prvRoomService.createPrivateRoom(prvRoom));
     }
     
     @PostMapping("/student/create")
-    public ResponseEntity<PrvRoom> createStudentPrivateRoom(
-            @RequestParam UUID studentId,
-            @RequestParam String name,
-            @RequestParam(required = false) String description,
-            @RequestParam(required = false) String imageUrl,
-            @RequestParam(required = false, defaultValue = "false") boolean isVisible) {
-        
-        PrvRoom newRoom = new PrvRoom();
-        newRoom.setName(name);
-        newRoom.setDescription(description);
-        newRoom.setImageUrl(imageUrl);
-        newRoom.setCreatedBy(studentId);
-        newRoom.setVisible(isVisible);
-        
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(prvRoomService.createPrivateRoom(newRoom));
+    public ResponseEntity<PrvRoom> createStudentPrivateRoom(@RequestBody PrvRoomCreateRequest request) {
+        try {
+            String name = request.getPrvRoom().getName();
+            String description = request.getPrvRoom().getDescription();
+            UUID studentId = request.getPrvRoom().getCreatedBy();
+            boolean isVisible = request.getPrvRoom().isVisible();
+
+            if (studentId == null || name == null || name.trim().isEmpty() || request.getImageFile() == null) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            MultipartFile image = request.getImageFile();
+
+            String imageUrl = fileStorageService.storeFile(image);
+
+            PrvRoom newRoom = new PrvRoom();
+            newRoom.setName(name);
+            newRoom.setDescription(description);
+            newRoom.setImageUrl(imageUrl);
+            newRoom.setCreatedBy(studentId);
+            newRoom.setVisible(isVisible);
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(prvRoomService.createPrivateRoom(newRoom));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping("/update/{id}")
