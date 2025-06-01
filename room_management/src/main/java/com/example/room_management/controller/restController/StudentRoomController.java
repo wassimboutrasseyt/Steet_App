@@ -19,20 +19,6 @@ public class StudentRoomController {
         this.studentRoomService = studentRoomService;
     }
     
-    @PostMapping("/private/create")
-    public ResponseEntity<PrvRoom> createPrivateRoom(
-            @RequestParam UUID studentId,
-            @RequestParam String roomName,
-            @RequestParam(required = false) String description,
-            @RequestParam(required = false) String imageUrl,
-            @RequestParam(required = false, defaultValue = "false") boolean isVisible) {
-        
-        PrvRoom newRoom = studentRoomService.createPrivateRoom(
-                studentId, roomName, description, imageUrl, isVisible);
-        
-        return ResponseEntity.status(HttpStatus.CREATED).body(newRoom);
-    }
-    
     @GetMapping("/{studentId}")
     public ResponseEntity<StudentRoomsDTO> getStudentRoomInfo(@PathVariable UUID studentId) {
         return ResponseEntity.ok(studentRoomService.getStudentRoomInfo(studentId));
