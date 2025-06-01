@@ -21,9 +21,10 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/actuator/**", "/api/users/login" , "/api/users/register").permitAll()
+                        .requestMatchers("/actuator/**", "/api/users/login" , "/api/users/register" , "/api/students/register").permitAll()
                         .requestMatchers("/students/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/students/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/users/*/change-password").authenticated()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

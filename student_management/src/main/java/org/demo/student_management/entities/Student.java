@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 import org.demo.student_management.entities.enums.Interests;
 import org.demo.student_management.entities.enums.Majors;
 
@@ -13,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -36,11 +38,9 @@ public class Student extends User{
     // memberships of the student on private rooms
 //    @OneToMany(mappedBy = "student")
 //    private List<Membership> memberships;
-    private UUID id_memberships;
-
-    // Constructor to initialize User and Student attributes
-    public Student(String firstName, String lastName, String username, String email, String password, Majors major, LocalDate dob, List<Interests> interest) {
-        super(null, firstName, lastName, username, email, password); // Pass null for id, it will be generated
+    private UUID id_memberships;    // Constructor to initialize User and Student attributes
+    public Student(String firstName, String lastName, String username, String email, String password, Majors major, LocalDate dob, List<Interests> interest, String profilePictureUrl) {
+        super(null, firstName, lastName, username, email, password, profilePictureUrl); // Include profilePictureUrl
         this.major = major;
         this.dob = dob;
         this.interest = interest;

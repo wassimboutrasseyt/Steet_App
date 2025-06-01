@@ -162,4 +162,46 @@ public class StudentService implements StudentServiceInt {
         // Logic for rejecting an invitation
         return "Invitation rejected";
     }
+
+    @Override
+    public Student updateProfilePicture(UUID id, String profilePictureUrl) {
+        if (id == null) {
+            logger.error("Attempted to update profile picture with a null student ID");
+            throw new IllegalArgumentException("Student ID cannot be null");
+        }
+        
+        if (profilePictureUrl == null || profilePictureUrl.isEmpty()) {
+            logger.error("Attempted to update profile picture with a null or empty URL");
+            throw new IllegalArgumentException("Profile picture URL cannot be null or empty");
+        }
+        
+        Optional<Student> studentOptional = studentRepository.findById(id);
+        if (studentOptional.isPresent()) {
+            Student student = studentOptional.get();
+            student.setProfilePictureUrl(profilePictureUrl);
+            logger.info("Updating profile picture for student with ID: {}", id);
+            return studentRepository.save(student);
+        } else {
+            logger.warn("No student found with ID: {} to update profile picture", id);
+            return null;
+        }
+    }
+
+    @Override
+    public String getProfilePictureUrl(UUID id) {
+        if (id == null) {
+            logger.error("Attempted to get profile picture with a null student ID");
+            throw new IllegalArgumentException("Student ID cannot be null");
+        }
+        
+        Optional<Student> studentOptional = studentRepository.findById(id);
+        if (studentOptional.isPresent()) {
+            Student student = studentOptional.get();
+            logger.info("Fetching profile picture for student with ID: {}", id);
+            return student.getProfilePictureUrl();
+        } else {
+            logger.warn("No student found with ID: {} to get profile picture", id);
+            return null;
+        }
+    }
 }
