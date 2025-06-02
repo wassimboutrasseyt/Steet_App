@@ -45,7 +45,7 @@ public class PrvRoomController {
                 return ResponseEntity.badRequest().build();
             }
 
-            String imageUrl = fileStorageService.storeFile(imageFile);
+            String imageUrl = "/rooms/room-image/" + fileStorageService.storeFile(imageFile);
 
             PrvRoom newRoom = new PrvRoom();
             newRoom.setName(name);
@@ -60,6 +60,7 @@ public class PrvRoomController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
     @PutMapping("/update/{id}")
     public ResponseEntity<PrvRoom> updatePrivateRoom(@PathVariable UUID id, @RequestBody PrvRoom prvRoom) {
