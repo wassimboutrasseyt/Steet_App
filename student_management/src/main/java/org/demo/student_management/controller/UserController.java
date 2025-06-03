@@ -4,6 +4,7 @@ import org.demo.student_management.dto.ChangePasswordRequest;
 import org.demo.student_management.dto.KeycloakTokenResponse;
 import org.demo.student_management.dto.LoginRequest;
 import org.demo.student_management.dto.RegisterRequest;
+import org.demo.student_management.entities.Administrator;
 import org.demo.student_management.entities.User;
 import org.demo.student_management.services.implementations.UserService;
 import org.demo.student_management.services.implementations.StudentService;
@@ -93,16 +94,23 @@ public class UserController {
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest request) {
         String usernameOrEmail = request.getUsernameOrEmail();
         String password = request.getPassword();
-
+        Boolean isAdmin = false;
         System.out.println("=== LOGIN ENDPOINT REACHED ===");
         System.out.println("Username: " + usernameOrEmail);
         System.out.println("Password: " + password);
 
         String username = usernameOrEmail;
         boolean isEmail = usernameOrEmail.contains("@");
+        User user = userService.getUserByEmail(usernameOrEmail);
+        isAdmin = user instanceof Administrator;
+        if (isAdmin) {
+            System.out.println("-------------------------------------------------User is an administrator, logging in as admin.-------------------------------------------------");
+        } else {
+            System.out.println("-------------------------------------------------User is a regular user, logging in as user.-------------------------------------------------");
+        }
         if (isEmail) {
             try {
-                User user = userService.getUserByEmail(usernameOrEmail);
+
                 if (user == null) {
                     throw new Exception("User not found with email: " + usernameOrEmail);
                 }
@@ -122,6 +130,7 @@ public class UserController {
             return ResponseEntity.ok(Map.of(
                     "userId", userId,
                     "accessToken", tokenResponse.getAccess_token(),
+                    "isAdmin", isAdmin,
                     "tokenType", tokenResponse.getToken_type()));
         } catch (Exception e) {
             System.err.println("=== LOGIN FAILED ===");

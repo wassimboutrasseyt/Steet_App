@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AdministratorRepository extends JpaRepository<Administrator,UUID>{
 
+    boolean existsByUserName(String userName);
+
+    void removeAllByUserName(String userName);
 }

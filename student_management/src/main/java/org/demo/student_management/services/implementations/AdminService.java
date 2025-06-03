@@ -24,7 +24,7 @@ public class AdminService implements AdminServiceInt {
         if (admin == null) {
             throw new IllegalArgumentException("Administrator cannot be null");
         }
-        if (adminRepository.existsById(admin.getId())) {
+        if (adminRepository.existsByUserName(admin.getUserName())) {
             throw new IllegalStateException("Administrator with the same ID already exists");
         }
         return adminRepository.save(admin);
