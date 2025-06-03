@@ -1,6 +1,7 @@
 package com.example.room_management.services.implementations;
 
 import com.example.room_management.dto.StudentRoomsDTO;
+import com.example.room_management.entities.Invitation;
 import com.example.room_management.entities.Membership;
 import com.example.room_management.entities.PrvRoom;
 import com.example.room_management.entities.enums.Role;
@@ -67,28 +68,30 @@ public class StudentRoomService implements StudentRoomServiceInt {
 
     @Override
     public StudentRoomsDTO getStudentRoomInfo(UUID studentId) {
-        if (studentId == null) {
-            throw new IllegalArgumentException("Student ID cannot be null");
-        }
+        // if (studentId == null) {
+        //     throw new IllegalArgumentException("Student ID cannot be null");
+        // }
         
-        // Get rooms created by this student
-        List<PrvRoom> createdRooms = prvRoomRepository.findByCreatedBy(studentId);
+        // // Get rooms created by this student
+        // List<PrvRoom> createdRooms = prvRoomRepository.findByCreatedBy(studentId);
         
-        // Get all memberships for this student
-        List<Membership> memberships = memberShipRepository.findAll().stream()
-                .filter(m -> m.getId_student().equals(studentId) && m.isActive())
-                .collect(Collectors.toList());
+        // // Get all memberships for this student
+        // List<Membership> memberships = memberShipRepository.findAll().stream()
+        //         .filter(m -> m.getId_student().equals(studentId) && m.isActive())
+        //         .collect(Collectors.toList());
         
-        // Extract rooms from memberships (excluding rooms the student created)
-        List<PrvRoom> memberRooms = memberships.stream()
-                .map(Membership::getRoom)
-                .filter(room -> !room.getCreatedBy().equals(studentId))
-                .collect(Collectors.toList());
+        // // Extract rooms from memberships (excluding rooms the student created)
+        // List<PrvRoom> memberRooms = memberships.stream()
+        //         .map(Membership::getRoom)
+        //         .filter(room -> !room.getCreatedBy().equals(studentId))
+        //         .collect(Collectors.toList());
         
-        // Get pending invitations
-        List<UUID> pendingInvitations = invitationService.getPendingInvitationsForStudent(studentId);
+        // // Get pending invitations
+        // List<Invitation> pendingInvitations = invitationService.getPendingInvitationsForStudent(studentId);
         
-        return new StudentRoomsDTO(studentId, createdRooms, memberRooms, pendingInvitations);
+        // return new StudentRoomsDTO(studentId, createdRooms, memberRooms, pendingInvitations);
+
+        return null;
     }
 
     @Override

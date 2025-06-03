@@ -1,5 +1,6 @@
 package com.example.room_management.controller.restController;
 
+import com.example.room_management.entities.Invitation;
 import com.example.room_management.services.implementations.InvitationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +46,7 @@ public class InvitationController {
     }
     
     @GetMapping("/pending/{studentId}")
-    public ResponseEntity<List<UUID>> getPendingInvitations(@PathVariable UUID studentId) {
+    public ResponseEntity<List<Invitation>> getPendingInvitations(@PathVariable UUID studentId) {
         return ResponseEntity.ok(invitationService.getPendingInvitationsForStudent(studentId));
     }
 }

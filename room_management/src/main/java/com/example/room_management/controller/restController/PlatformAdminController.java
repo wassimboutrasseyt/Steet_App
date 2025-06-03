@@ -2,44 +2,59 @@ package com.example.room_management.controller.restController;
 
 import com.example.room_management.entities.PubRoom;
 import com.example.room_management.services.implementations.PubRoomService;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
-@RequestMapping("roomsAdmin")
 @RestController
+@RequestMapping("/roomsAdmin")
 public class PlatformAdminController {
     private final PubRoomService pubRoomService;
 
-    public PlatformAdminController(PubRoomService pubRoomService) {this.pubRoomService = pubRoomService;}
+    public PlatformAdminController(PubRoomService pubRoomService) {
+        this.pubRoomService = pubRoomService;
+    }
 
     @PostMapping("/createPublicRoom")
-    public PubRoom createPublicRoom(@RequestBody PubRoom pubRoom) {
-        return pubRoomService.createPublicRoom(pubRoom);
+    public ResponseEntity<PubRoom> createPublicRoom(@RequestBody PubRoom pubRoom) {
+        PubRoom created = pubRoomService.createPublicRoom(pubRoom);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @PostMapping("updatePublicRoom")
-    public PubRoom updatePublicRoom(@RequestParam UUID id, @RequestBody PubRoom pubRoom) {
-        return pubRoomService.updatePublicRoom(id, pubRoom);
+    @PutMapping("/updatePublicRoom")
+    public ResponseEntity<PubRoom> updatePublicRoom(@RequestParam UUID id, @RequestBody PubRoom pubRoom) {
+        PubRoom updated = pubRoomService.updatePublicRoom(id, pubRoom);
+        if (updated == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(updated);
     }
 
-    @DeleteMapping("deletePublicRoom")
-    public boolean deletePublicRoom(@RequestParam UUID id) {
-        return pubRoomService.deletePublicRoom(id);
+    @DeleteMapping("/deletePublicRoom")
+    public ResponseEntity<?> deletePublicRoom(@RequestParam UUID id) {
+        boolean deleted = pubRoomService.deletePublicRoom(id);
+        if (deleted) {
+            return ResponseEntity.ok().body("Public room deleted successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Public room not found.");
+        }
     }
 
-    @GetMapping("publicRoomById")
-    public PubRoom publicRoomById(@RequestParam UUID id) {
-        return pubRoomService.getPublicRoomById(id);
+    @GetMapping("/publicRoomById")
+    public ResponseEntity<PubRoom> publicRoomById(@RequestParam UUID id) {
+        PubRoom room = pubRoomService.getPublicRoomById(id);
+        if (room == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(room);
     }
 
-    @GetMapping("allPublicRooms")
-    public List<PubRoom> allPublicRooms() {
-        return pubRoomService.getAllPublicRooms();
+    @GetMapping("/allPublicRooms")
+    public ResponseEntity<List<PubRoom>> allPublicRooms() {
+        List<PubRoom> rooms = pubRoomService.getAllPublicRooms();
+        return ResponseEntity.ok(rooms);
     }
 }

@@ -101,16 +101,11 @@ public class UserController {
 
         String username = usernameOrEmail;
         boolean isEmail = usernameOrEmail.contains("@");
-        User user = userService.getUserByEmail(usernameOrEmail);
-        isAdmin = user instanceof Administrator;
-        if (isAdmin) {
-            System.out.println("-------------------------------------------------User is an administrator, logging in as admin.-------------------------------------------------");
-        } else {
-            System.out.println("-------------------------------------------------User is a regular user, logging in as user.-------------------------------------------------");
-        }
+
         if (isEmail) {
             try {
-
+                User user = userService.getUserByEmail(usernameOrEmail);
+                isAdmin = user instanceof Administrator;
                 if (user == null) {
                     throw new Exception("User not found with email: " + usernameOrEmail);
                 }
@@ -120,7 +115,9 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
             }
         }
-        String userId = userService.getUserByUserName(username).getId().toString();
+        User user = userService.getUserByUserName(username);
+        isAdmin = user instanceof Administrator;
+        String userId = user.getId().toString();
         System.out.println("userId: " + userId);
 
         try {

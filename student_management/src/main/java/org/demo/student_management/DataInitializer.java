@@ -29,10 +29,10 @@ public class DataInitializer {
     @Bean
     CommandLineRunner init(StudentRepository studentRepository , AdministratorRepository administratorRepository) {
         return args -> {
-//            administratorRepository.deleteAll();
-//            Administrator admin = new Administrator( UUID.randomUUID(),"admin", "Admin", "admin", "admin@admin.com", "admin");
-//            adminService.createAdministrator(admin);
-//            userService.registerUserInKeycloak(new RegisterRequest(admin.getUserName(), admin.getEmail(), admin.getPassword() , admin.getFirstName(), admin.getLastName()));
+        //    administratorRepository.deleteAll();
+        //    Administrator admin = new Administrator( UUID.randomUUID(),"admin", "Admin", "admin", "admin@admin.com", "admin");
+        //    adminService.createAdministrator(admin);
+        //    userService.registerUserInKeycloak(new RegisterRequest(admin.getUserName(), admin.getEmail(), admin.getPassword() , admin.getFirstName(), admin.getLastName()));
         };
     }
 

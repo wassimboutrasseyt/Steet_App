@@ -155,7 +155,7 @@ public class InvitationService implements InvitationServiceInt {
     }
 
     @Override
-    public List<UUID> getPendingInvitationsForStudent(UUID studentId) {
+    public List<Invitation> getPendingInvitationsForStudent(UUID studentId) {
         if (studentId == null) {
             throw new IllegalArgumentException("Student ID cannot be null");
         }
@@ -164,7 +164,7 @@ public class InvitationService implements InvitationServiceInt {
             .findByInvitedStudentIdAndStatus(studentId, Invitation.InvitationStatus.PENDING);
         
         return pendingInvitations.stream()
-            .map(invitation -> invitation.getRoom().getId())
+            .map(invitation -> invitation)
             .collect(Collectors.toList());
     }
 }

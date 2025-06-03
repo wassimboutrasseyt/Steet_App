@@ -3,6 +3,8 @@ package com.example.room_management.services.interfaces;
 import java.util.List;
 import java.util.UUID;
 
+import com.example.room_management.entities.Invitation;
+
 /**
  * Interface for handling student invitations to private rooms
  */
@@ -42,5 +44,5 @@ public interface InvitationServiceInt {
      * @param studentId The ID of the student
      * @return List of room IDs with pending invitations
      */
-    List<UUID> getPendingInvitationsForStudent(UUID studentId);
+    List<Invitation> getPendingInvitationsForStudent( UUID studentId);
 }

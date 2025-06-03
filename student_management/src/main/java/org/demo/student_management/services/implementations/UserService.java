@@ -3,6 +3,7 @@ package org.demo.student_management.services.implementations;
 import org.demo.student_management.dto.ChangePasswordRequest;
 import org.demo.student_management.dto.KeycloakTokenResponse;
 import org.demo.student_management.dto.RegisterRequest;
+import org.demo.student_management.entities.Administrator;
 import org.demo.student_management.entities.User;
 import org.demo.student_management.repositories.UserRepository;
 import org.demo.student_management.services.interfaces.UserServiceInt;
@@ -266,7 +267,7 @@ public class UserService implements UserServiceInt {
         if (!request.getNewPassword().equals(request.getConfirmPassword())) {
             throw new IllegalArgumentException("New password and confirmation do not match");
         }
-
+        
         // First, verify current password with Keycloak
         try {
             loginWithKeycloak(username, request.getCurrentPassword());
